@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import InputComponent from './InputComponent';
 import OutputComponent from './OutputComponent';
-// Import OpenAI from 'openai'
-import { OpenAI } from 'openai';
+import './styles.css';
 
 const App = () => {
   const [inputValue, setInputValue] = useState('');
@@ -13,27 +13,28 @@ const App = () => {
   };
 
   const handleSubmit = async () => {
+    const data = {
+      model: "gpt-3.5-turbo",
+      messages: [{
+        role: "user",
+        content: inputValue
+      }]
+    };
+
+    const headers = {
+      'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+      'Content-Type': 'application/json'
+    };
+
     try {
-      // Instantiate OpenAI directly with the API key
-      const openai = new OpenAI({ apiKey: process.env.REACT_APP_OPENAI_API_KEY, dangerouslyAllowBrowser: true});
-      // const completion = await openai.completions.create({
-      //   model: "gpt-3.5-turbo",
-      //   prompt: "Say this is a test.",
-      //   max_tokens: 7,
-      //   temperature: 0,
-      // });
-        const stream = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: inputValue }],
-        stream: true,
-    });
-      for await (const chunk of stream) {
-          process.stdout.write(chunk.choices[0]?.delta?.content || "");
-      }
-      // console.log(completion);
-      // setOutput(completion.data.choices[0].text);
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        data,
+        { headers: headers }
+      );
+      setOutput(response.data.choices[0].message.content);
     } catch (error) {
-      console.error('Error calling OpenAI API:', error);
+      console.error('Error calling OpenAI API:', error.response ? error.response.data : error);
       setOutput('Error: Could not retrieve response.');
     }
   };
