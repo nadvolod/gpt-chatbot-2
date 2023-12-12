@@ -42,6 +42,13 @@ const App = () => {
 
   return (
     <div className="App">
+      <div className="footer">
+        Created by Nikolay Advolodkin on Test Automation Experience
+        <br/>
+        <a href="https://github.com/nadvolod/gpt-chatbot-2" target="_blank" rel="noopener noreferrer">
+          View Source Code
+        </a>
+      </div>
       <div>
         <input
           type="password"
