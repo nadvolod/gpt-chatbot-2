@@ -7,6 +7,7 @@ import './styles.css';
 const App = () => {
   const [inputValue, setInputValue] = useState('');
   const [output, setOutput] = useState('');
+  const [apiKey, setApiKey] = useState('');
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -22,7 +23,7 @@ const App = () => {
     };
 
     const headers = {
-      'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+      'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json'
     };
 
@@ -41,20 +42,20 @@ const App = () => {
 
   return (
     <div className="App">
+      <div>
+        <input
+          type="password"
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value)}
+          placeholder="Enter OpenAI API Key"
+        />
+      </div>
       <InputComponent
         onInputChange={handleInputChange}
         onSubmit={handleSubmit}
         inputValue={inputValue}
       />
       <OutputComponent output={output} />
-      {/* Add this section for the acknowledgment */}
-      <div className="footer">
-        Created by Nikolay Advolodkin from Test Automation Experience
-        <br/>
-        <a href="https://github.com/nadvolod/gpt-chatbot-2" target="_blank" rel="noopener noreferrer">
-          View Source Code
-        </a>
-      </div>
     </div>
   );
 };
