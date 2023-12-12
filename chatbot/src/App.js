@@ -47,6 +47,14 @@ const App = () => {
         inputValue={inputValue}
       />
       <OutputComponent output={output} />
+      {/* Add this section for the acknowledgment */}
+      <div className="footer">
+        Created by Nikolay Advolodkin from Test Automation Experience
+        <br/>
+        <a href="https://github.com/nadvolod/gpt-chatbot-2" target="_blank" rel="noopener noreferrer">
+          View Source Code
+        </a>
+      </div>
     </div>
   );
 };
